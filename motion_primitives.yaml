@@ -1,0 +1,114 @@
+# ClawsJoy Robotics - 标准动作原语
+# 这是大脑(ClawsJoy)和小脑(机器人)之间的契约接口
+# 版本: 1.0.0
+
+version: "1.0.0"
+
+# ===== 移动类 =====
+primitives:
+  navigate_to:
+    description: "导航到指定位置"
+    params:
+      target_location: {type: string, required: true}   # 位置ID 或 x,y,z 坐标
+      speed: {type: float, required: false, default: 0.5}
+    returns: {success: bool, position_reached: string}
+    timeout_ms: 30000
+
+  move_arm:
+    description: "移动机械臂到指定姿态"
+    params:
+      joint_angles: {type: list, required: false}        # [j1, j2, j3, j4, j5, j6]
+      target_pose: {type: dict, required: false}          # {x, y, z, roll, pitch, yaw}
+      speed: {type: float, required: false, default: 0.3}
+    returns: {success: bool, current_pose: dict}
+    timeout_ms: 15000
+
+  move_base:
+    description: "底盘移动（相对距离或绝对坐标）"
+    params:
+      linear: {type: dict, required: false}               # {x, y, z}
+      angular: {type: dict, required: false}              # {x, y, z}
+      duration_ms: {type: int, required: false}
+    returns: {success: bool}
+    timeout_ms: 10000
+
+# ===== 操作类 =====
+  grasp:
+    description: "抓取指定物体"
+    params:
+      object_id: {type: string, required: true}
+      force: {type: float, required: false, default: 1.0}
+      approach_height: {type: float, required: false, default: 0.1}
+    returns: {success: bool, grasped_object: string}
+    timeout_ms: 20000
+
+  release:
+    description: "释放当前抓取的物体"
+    params:
+      object_id: {type: string, required: true}
+      drop_height: {type: float, required: false, default: 0.05}
+    returns: {success: bool}
+    timeout_ms: 5000
+
+  push:
+    description: "推动物体"
+    params:
+      object_id: {type: string, required: true}
+      direction: {type: string, required: true}            # forward/backward/left/right
+      distance_cm: {type: float, required: false, default: 10.0}
+    returns: {success: bool}
+    timeout_ms: 10000
+
+# ===== 感知类 =====
+  look_at:
+    description: "摄像头看向指定方向或物体"
+    params:
+      target: {type: string, required: true}               # 物体ID 或 "front/left/right/up/down"
+    returns: {success: bool, image_data: string}            # base64 编码的图像
+    timeout_ms: 5000
+
+  detect_objects:
+    description: "检测视野内的物体"
+    params:
+      object_types: {type: list, required: false}           # ["cup", "bottle", ...] 空=全部
+      min_confidence: {type: float, required: false, default: 0.5}
+    returns: {success: bool, objects: list}                 # [{id, type, bbox, confidence}]
+    timeout_ms: 8000
+
+  get_pose:
+    description: "获取当前位置和姿态"
+    params: {}
+    returns: {success: bool, position: {x, y, z}, orientation: {roll, pitch, yaw}}
+    timeout_ms: 1000
+
+# ===== 交互类 =====
+  speak:
+    description: "语音播报"
+    params:
+      text: {type: string, required: true}
+      voice: {type: string, required: false, default: "default"}
+      speed: {type: float, required: false, default: 1.0}
+    returns: {success: bool}
+    timeout_ms: 30000
+
+  play_gesture:
+    description: "播放预设动作"
+    params:
+      gesture_name: {type: string, required: true}         # wave/nod/shake_head/point
+      duration_ms: {type: int, required: false, default: 2000}
+    returns: {success: bool}
+    timeout_ms: 5000
+
+# ===== 系统类 =====
+  wait:
+    description: "等待指定时间"
+    params:
+      duration_ms: {type: int, required: true}
+    returns: {success: bool}
+    timeout_ms: 60000
+
+  emergency_stop:
+    description: "紧急停止所有动作"
+    params: {}
+    returns: {success: bool}
+    timeout_ms: 1000

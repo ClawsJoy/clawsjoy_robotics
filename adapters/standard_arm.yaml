@@ -1,0 +1,53 @@
+# 标准机械臂配置
+# 用户修改此文件适配不同机械臂
+
+arm:
+  name: "standard_6dof"
+  type: "serial"              # serial / parallel / scara
+  dof: 6                      # 自由度
+  
+  # 关节限位 (度)
+  joints:
+    - name: "base"
+      min: -180
+      max: 180
+      home: 0
+    - name: "shoulder"
+      min: -90
+      max: 90
+      home: 0
+    - name: "elbow"
+      min: -135
+      max: 135
+      home: 0
+    - name: "wrist_1"
+      min: -180
+      max: 180
+      home: 0
+    - name: "wrist_2"
+      min: -90
+      max: 90
+      home: 0
+    - name: "wrist_3"
+      min: -180
+      max: 180
+      home: 0
+
+  # 末端执行器
+  gripper:
+    type: "parallel"           # parallel / suction / soft
+    max_open_mm: 100
+    max_force_n: 50
+    
+  # 运动参数
+  motion:
+    max_velocity: 1.0          # m/s
+    max_acceleration: 2.0      # m/s²
+    home_pose: [0, 0, 0, 0, 0, 0]
+
+  # ROS/2 话题映射
+  ros2:
+    joint_state_topic: "/joint_states"
+    joint_command_topic: "/arm/joint_commands"
+    gripper_command_topic: "/gripper/command"
+    action_server: "/arm/follow_joint_trajectory"

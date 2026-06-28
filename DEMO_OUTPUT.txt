@@ -1,0 +1,62 @@
+============================================================
+ClawsJoy Robotics - Standard Interface Demo
+============================================================
+
+ClawsJoy Robotics 对接检查清单
+================================
+
+□ 1. 机械臂
+    - 话题: /arm/joint_trajectory (发布)
+    - 话题: /arm/joint_states (订阅)
+    - 关节名: ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+
+□ 2. 夹爪
+    - 话题: /gripper/command (发布, Float32, 0=闭 1=开)
+    - 话题: /gripper/state (订阅)
+
+□ 3. 底盘
+    - 话题: /base/cmd_vel (发布)
+    - 话题: /base/odom (订阅)
+
+□ 4. 摄像头
+    - 话题: /camera/rgb (订阅)
+    - 话题: /camera/depth (订阅)
+
+□ 5. 物体检测
+    - 话题: /perception/objects (订阅)
+
+□ 6. 语音
+    - 话题: /speech/tts (发布)
+
+□ 7. 安全
+    - 话题: /safety/estop (发布)
+
+完成以上话题对接后，将 ClawsJoy Robotics 的 ros2_bridge.py 
+中 mock_mode 设为 False，启动系统即可。
+
+
+============================================================
+Task Execution
+============================================================
+
+[User]: "介绍自己"
+[Result]: ✅ 完成任务，共执行 2 个动作
+
+[User]: "拿水杯"
+[Result]: ✅ 完成任务，共执行 6 个动作
+
+[User]: "帮我拿遥控器"
+[Result]: ✅ 完成任务，共执行 6 个动作
+
+[User]: "巡逻"
+[Result]: ✅ 完成任务，共执行 6 个动作
+
+============================================================
+Action → ROS/2 Topic Mapping
+============================================================
+  navigate_to          → /base/cmd_vel                  (geometry_msgs/Twist)
+  move_arm             → /arm/joint_trajectory          (trajectory_msgs/JointTrajectory)
+  move_base            → /base/cmd_vel                  (geometry_msgs/Twist)
+  grasp                → /gripper/command               (std_msgs/Float32)
+  release              → /gripper/command               (std_msgs/Float32)
+  push                 → /base/cmd_vel                  (geometry_msgs/Twist)

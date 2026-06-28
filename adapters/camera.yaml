@@ -1,0 +1,20 @@
+# 摄像头配置
+
+camera:
+  name: "rgbd_front"
+  type: "rgbd"                 # rgbd / stereo / mono
+  
+  # 参数
+  resolution: [640, 480]
+  fps: 30
+  horizontal_fov: 87           # 度
+  
+  # 位置 (相对机器人基座)
+  mount_position: [0.1, 0, 0.8]  # x, y, z (米)
+  mount_orientation: [0, 0, 0]   # roll, pitch, yaw (度)
+  
+  # ROS/2 话题
+  ros2:
+    rgb_topic: "/camera/rgb/image_raw"
+    depth_topic: "/camera/depth/image_raw"
+    camera_info_topic: "/camera/rgb/camera_info"

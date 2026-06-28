@@ -1,0 +1,43 @@
+templates:
+  fetch_object:
+    description: "拿取指定物体"
+    keywords: ["拿", "取", "给我", "递给我", "拿来", "帮我拿"]
+    steps:
+      - action: look_at
+        params: {target: "{{object_location}}"}
+      - action: detect_objects
+        params: {object_types: ["{{object_type}}"]}
+      - action: navigate_to
+        params: {target_location: "{{object_location}}"}
+      - action: move_arm
+        params: {target_pose: "{{grasp_pose}}"}
+      - action: grasp
+        params: {object_id: "{{object_id}}"}
+      - action: speak
+        params: {text: "已拿到{{object_name}}"}
+
+  patrol:
+    description: "巡逻指定路线"
+    keywords: ["巡逻", "巡检"]
+    steps:
+      - action: navigate_to
+        params: {target_location: "{{waypoint_1}}"}
+      - action: look_at
+        params: {target: "front"}
+      - action: speak
+        params: {text: "{{waypoint_1}} 正常"}
+      - action: navigate_to
+        params: {target_location: "{{waypoint_2}}"}
+      - action: look_at
+        params: {target: "left"}
+      - action: speak
+        params: {text: "{{waypoint_2}} 正常"}
+
+  introduce:
+    description: "自我介绍"
+    keywords: ["介绍自己", "你是谁", "自我介绍"]
+    steps:
+      - action: play_gesture
+        params: {gesture_name: "wave"}
+      - action: speak
+        params: {text: "{{intro_text}}"}

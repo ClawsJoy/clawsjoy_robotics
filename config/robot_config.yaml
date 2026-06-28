@@ -1,0 +1,37 @@
+robot:
+  name: "clawsjoy_robot"
+  type: "industrial_arm"
+  arm:
+    model: "generic_6dof"
+    dof: 6
+    joint_names:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+    gripper:
+      type: "parallel"
+      max_open_mm: 100
+      max_force_n: 50
+  chassis:
+    enabled: false
+  cameras:
+    - name: "front_rgbd"
+      type: "rgbd"
+      resolution: [640, 480]
+  locations:
+    home: {x: 0.0, y: 0.0, z: 0.0}
+    table: {x: 1.0, y: 0.5, z: 0.0}
+    counter: {x: 0.8, y: -0.3, z: 0.0}
+  ros2_topics:
+    arm_joint_trajectory: "/arm/joint_trajectory"
+    arm_joint_states: "/arm/joint_states"
+    gripper_command: "/gripper/command"
+    cmd_vel: "/base/cmd_vel"
+    rgb_image: "/camera/rgb"
+    depth_image: "/camera/depth"
+    object_detections: "/perception/objects"
+    tts: "/speech/tts"
+    estop: "/safety/estop"

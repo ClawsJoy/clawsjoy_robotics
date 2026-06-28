@@ -1,0 +1,30 @@
+# 标准底盘配置
+
+chassis:
+  name: "standard_diff_drive"
+  type: "differential"         # differential / ackermann / omnidirectional
+  
+  # 尺寸
+  wheel_radius_m: 0.1
+  wheel_base_m: 0.4
+  
+  # 运动参数
+  motion:
+    max_linear_velocity: 1.0   # m/s
+    max_angular_velocity: 1.57 # rad/s (90°/s)
+    max_acceleration: 1.0      # m/s²
+    
+  # 传感器
+  sensors:
+    - type: "lidar"
+      topic: "/scan"
+      range_m: 12.0
+    - type: "imu"
+      topic: "/imu"
+    - type: "odometry"
+      topic: "/odom"
+    
+  # ROS/2 话题映射
+  ros2:
+    cmd_vel_topic: "/cmd_vel"
+    odom_topic: "/odom"
